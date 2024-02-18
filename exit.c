@@ -1,6 +1,7 @@
 #include<stdio.h>
 int main() {
-    //Exit Control loop
+    /*Exit Control loop:- Statement will
+    exicute first statement*/
     int i=1;
     do
     {
