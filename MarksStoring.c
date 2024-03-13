@@ -15,3 +15,29 @@ int main()
     return 0;
 }
 
+
+
+
+
+
+
+
+#include <stdio.h>
+
+int main()
+{   
+    int i, n;
+    printf("Number Of Students:- ");
+    scanf("%d", &n);
+    int a[n], c;
+    printf("Enter Marks:- ");
+    for(i=1; i<=n; i++)
+    {   
+        scanf("%d", &a[i]);
+    }
+    printf("\nType Roll no:- ");
+    scanf("%d",&c);
+    printf("Marks=%d", a[c]);
+    return 0;
+}
+
