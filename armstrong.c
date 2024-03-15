@@ -1,23 +1,28 @@
-#include<stdio.h>
-int main() {
-    int no, sum=0, temp, r;
+#include <stdio.h>
+int arm(int n);
 
-    printf("Enter Three Digit No:- ");
-    scanf("%d", &no);
-    temp=no;
+int main()
+{
+    int n;
+    printf("Enter three digit number: ");
+    scanf("%d", &n);
+    arm(n);
+    return 0;
+}
 
-    while(no > 0) {
-        r = no%10;
-        sum=sum+r*r*r;
-        no = no/10;
+int arm(int n){
+    int t, t1, d;
+    t=n;
+    while(n!=0){
+        d=n%10;
+        t1+=d*d*d;
+        n/=10;
     }
     
-    if(temp == sum) {
-        printf("\n %d Is An Armstrong Number",  temp);
+    if(t1==t){
+        printf("%d is Armstrong number.",t);
     }
-    else {
-        printf( "\n %d Is Not An Armstrong Number", temp);
+    else{
+        printf("%d is not Armstrong number.",t);
     }
-    return 0;
-
 }
