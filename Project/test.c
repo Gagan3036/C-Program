@@ -6,10 +6,8 @@
 #define DATE 365
 
 struct Student {
-    int id;
+    char id[10]; // Changed to character array to accommodate letters with numbers
     char name[50];
-    int age;
-    float gpa;
 };
 
 struct Date {
@@ -19,43 +17,68 @@ struct Date {
 };
 
 struct Attendance {
-    char pora;
+    char pora[MAX_STUDENTS]; // Changed to array to store attendance for each student
 };
 
-struct Date dates[DATE]; 
-struct Attendance attendance[MAX_STUDENTS]; 
-struct Student students[MAX_STUDENTS]; 
+struct Date dates[DATE];
+struct Attendance attendance[DATE]; // Changed to store attendance for each date
+struct Student students[MAX_STUDENTS];
 
 int num_students = 0;
 int num_dates = 0;
 
+void clearScreen() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
 void add_date() {
     printf("Enter date (DD MM YYYY): ");
-    scanf("%d %d %d", &dates[num_dates].DD, &dates[num_dates].MM, &dates[num_dates].YYYY); 
+    scanf("%d %d %d", &dates[num_dates].DD, &dates[num_dates].MM, &dates[num_dates].YYYY);
     num_dates++;
-    return;
 }
 
 void addStudent() {
+    clearScreen();
     if (num_students >= MAX_STUDENTS) {
         printf("Maximum number of students reached!\n");
         return;
     }
 
-    printf("Enter student ID: ");
-    scanf("%d", &students[num_students].id);
-    printf("Enter student name: ");
-    scanf("%s", students[num_students].name);
-    printf("Enter student age: ");
-    scanf("%d", &students[num_students].age);
-    printf("Enter student GPA: ");
-    scanf("%f", &students[num_students].gpa);
+    int numToAdd;
+    printf("Enter the number of students you want to add: ");
+    scanf("%d", &numToAdd);
 
-    num_students++;
-    printf("Student added successfully!\n");
+    for (int i = 0; i < numToAdd; i++) {
+        printf("Enter student ID: ");
+        scanf("%s", students[num_students].id); // Modified to accept character array
+        printf("Enter student name: ");
+        getchar(); // Clear the input buffer
+        fgets(students[num_students].name, sizeof(students[num_students].name), stdin);
+        students[num_students].name[strcspn(students[num_students].name, "\n")] = '\0'; // Remove newline character if present
+
+        num_students++;
+    }
+
+    FILE *file = fopen("students.txt", "a");
+    if (file == NULL) {
+        printf("Error opening file to save student data.\n");
+        return;
+    }
+    for (int i = num_students - numToAdd; i < num_students; i++) {
+        fprintf(file, "%s %s\n", students[i].id, students[i].name); // Modified to use %s for ID
+    }
+    fclose(file);
+
+    clearScreen();
+    printf("Students added successfully!\n");
 }
 
 void displayStudents() {
+    clearScreen();
     if (num_students == 0) {
         printf("No students found!\n");
         return;
@@ -63,45 +86,85 @@ void displayStudents() {
 
     printf("Student Records:\n");
     for (int i = 0; i < num_students; i++) {
-        printf("ID: %d, Name: %s, Age: %d, GPA: %.2f\n",
-               students[i].id, students[i].name, students[i].age, students[i].gpa);
+        printf("ID: %s, Name: %s\n",
+               students[i].id, students[i].name); // Modified to use %s for ID
     }
 }
 
 void takeAttendance() {
+    clearScreen();
+    if (num_students == 0) {
+        printf("Please Add The Students First\n");
+        return;
+    }
+
     printf("Enter date (DD MM YYYY): ");
     scanf("%d %d %d", &dates[num_dates].DD, &dates[num_dates].MM, &dates[num_dates].YYYY);
+
+    char filename[50];
+    sprintf(filename, "attendance_%d_%d_%d.txt", dates[num_dates].DD, dates[num_dates].MM, dates[num_dates].YYYY);
+    FILE *file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Error opening file to save attendance data.\n");
+        return;
+    }
+
+    fprintf(file, "Attendance for date %d/%d/%d:\n", dates[num_dates].DD, dates[num_dates].MM, dates[num_dates].YYYY);
+
+    for (int i = 0; i < num_students; i++) {
+        printf("ID: %s, Name: %s\tP/A: ", students[i].id, students[i].name); // Modified to use %s for ID
+        scanf(" %c", &attendance[num_dates].pora[i]);
+        fprintf(file, "%s,      %c,    %s\n", students[i].id, attendance[num_dates].pora[i], students[i].name); // Modified to use %s for ID
+    }
+
+    fclose(file);
     num_dates++;
 
-    for(int i = 0; i < num_students; i++) {
-        printf("ID: %d, Name: %s, Age: %d, GPA: %.2f\tP/A: ", students[i].id, students[i].name, students[i].age, students[i].gpa);
-        scanf(" %c", &attendance[i].pora);
-    }
+    clearScreen();
     printf("Attendance taken successfully!\n");
-    return;
 }
 
 void viewAttendance() {
-    if (num_dates == 0) {
-        printf("No dates found!\n");
+    clearScreen();
+
+    int DD, MM, YYYY;
+    printf("Enter date (DD MM YYYY): ");
+    scanf("%d %d %d", &DD, &MM, &YYYY);
+
+    char filename[50];
+    sprintf(filename, "attendance_%d_%d_%d.txt", DD, MM, YYYY);
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("No attendance found for the given date!\n");
         return;
     }
-    int DD, MM, YYYY;
-    printf("\nEnter date (DD MM YYYY): ");
-    scanf("%d %d %d", &DD, &MM, &YYYY);
-    for (int i = 0; i < num_dates; i++) {
-        if (dates[i].DD == DD && dates[i].MM == MM && dates[i].YYYY == YYYY) {
-            for(int j = 0; j < num_students; j++){
-                printf("ID: %d, Name: %s, P/A: %c\n", students[j].id, students[j].name, attendance[j].pora);
-            }
-            return;
-        }
+
+    char line[100];
+    while (fgets(line, sizeof(line), file)) {
+        printf("%s", line);
     }
-    printf("No attendance found for the given date!\n"); 
-    return;
+
+    fclose(file);
+}
+
+void loadStudentsFromFile() {
+    FILE *file = fopen("students.txt", "r");
+    if (file == NULL) {
+        printf("No previous student data found.\n");
+        return;
+    }
+
+    while (fscanf(file, "%s %[^\n]", students[num_students].id, students[num_students].name) == 2) {
+        num_students++;
+    }
+
+    fclose(file);
 }
 
 int main() {
+    clearScreen();
+    loadStudentsFromFile();
+
     int choice;
 
     while (1) {
@@ -128,6 +191,7 @@ int main() {
                 displayStudents();
                 break;
             case 5:
+                clearScreen();
                 exit(0);
             default:
                 printf("Invalid choice! Please enter a valid option.\n");
