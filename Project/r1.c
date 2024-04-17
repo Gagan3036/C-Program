@@ -101,7 +101,9 @@ void takeAttendance() {
     printf("Enter date (DD MM YYYY): ");
     scanf("%d %d %d", &dates[num_dates].DD, &dates[num_dates].MM, &dates[num_dates].YYYY);
 
-    FILE *file = fopen("attendance.txt", "a");
+    char filename[50];
+    sprintf(filename, "attendance_%d_%d_%d.txt", dates[num_dates].DD, dates[num_dates].MM, dates[num_dates].YYYY);
+    FILE *file = fopen(filename, "w");
     if (file == NULL) {
         printf("Error opening file to save attendance data.\n");
         return;
@@ -129,36 +131,20 @@ void viewAttendance() {
     printf("Enter date (DD MM YYYY): ");
     scanf("%d %d %d", &DD, &MM, &YYYY);
 
-    FILE *file = fopen("attendance.txt", "r");
+    char filename[50];
+    sprintf(filename, "attendance_%d_%d_%d.txt", DD, MM, YYYY);
+    FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        printf("No attendance file found!\n");
+        printf("No attendance found for the given date!\n");
         return;
     }
 
     char line[100];
-    char dateStr[20];
-    sprintf(dateStr, "%d/%d/%d:", DD, MM, YYYY); // Adjust the date accordingly
-
-    int found = 0;
-
     while (fgets(line, sizeof(line), file)) {
-        if (strstr(line, dateStr) != NULL) {
-            found = 1;
-            printf("%s", line);  // Print the header line
-            while (fgets(line, sizeof(line), file)) {
-                if (strstr(line, "Attendance for date") != NULL) // Next date entry encountered
-                    break;
-                printf("%s", line);
-            }
-            break;
-        }
+        printf("%s", line);
     }
 
     fclose(file);
-
-    if (!found) {
-        printf("No attendance found for the given date!\n");
-    }
 }
 
 void loadStudentsFromFile() {
@@ -205,7 +191,6 @@ int main() {
                 displayStudents();
                 break;
             case 5:
-                clearScreen();
                 exit(0);
             default:
                 printf("Invalid choice! Please enter a valid option.\n");

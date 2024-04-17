@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Program Web Interface</title>
+</head>
+<body>
+    <h1>C Program Web Interface</h1>
+    <button onclick="executeCProgram()">Execute C Program</button>
+    <pre id="output"></pre>
+
+    <script>
+        function executeCProgram() {
+            fetch('/execute')
+                .then(response => response.text())
+                .then(output => document.getElementById('output').textContent = output)
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
