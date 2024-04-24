@@ -1,3 +1,2 @@
 # C-Program
 
-![1713921216071](image/README/1713921216071.png)
