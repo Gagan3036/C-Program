@@ -1,5 +1,3 @@
-# Project Title
-
 ## Students Attendance System
 
 # Mini Project Report
@@ -141,7 +139,6 @@ hardware resources.
 ![1714057833283](image/REDME/1714057833283.png)
 ![1714057846054](image/REDME/1714057846054.png)
 ![1714057858522](image/REDME/1714057858522.png)
-![Directory Files Information While Executing Program](directory_files.png)
 
 ## Chapter 7
 
