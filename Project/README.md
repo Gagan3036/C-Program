@@ -96,6 +96,8 @@ hardware resources.
 
 ### Flowchart
 
+![1714058084975](image/README/1714058084975.png)
+
 ## Chapter 4
 
 ### Functions Used
