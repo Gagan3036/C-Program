@@ -1,3 +1,5 @@
+### Youtube Video 
+[![Youtube Video](https://img.youtube.com/vi/u6gCJn1fbGE/0.jpg)](https://youtu.be/u6gCJn1fbGE?si=mQK25v9lX_8yr34q)
 ## Students Attendance System
 
 # Mini Project Report
