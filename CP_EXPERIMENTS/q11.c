@@ -14,7 +14,7 @@ int main(){
     printf("Enter the number of terms: ");
     scanf("%d",&n);
     printf("Fibonacci series: ");
-    for(int i=0; i<n; i++){
+    for(int i=1; i<=n; i++){
         printf("%d ",fibo(i));
     }
     return 0;
