@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int main() 
+int main(void) 
 {
   // a test string (s) and test delimeter (d)
   char s[] = "This is the way again.";
