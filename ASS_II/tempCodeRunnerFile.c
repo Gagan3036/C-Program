@@ -7,7 +7,7 @@ void decimalTobase(int num, int base){
     int i =0;
 
     // Convert decimal number to specified base
-    while(num > 0) {
+    while(num < 0) {
         result[i] = num % base;
         num = num / base;
         i++;
