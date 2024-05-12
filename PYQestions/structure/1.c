@@ -20,7 +20,7 @@ int main(){
         scanf("%d %s %d %f",&employees[i].empoyee_no, employees[i].employee_name, &employees[i].experience, &employees[i].salary);
     }
 
-    printf("Entered Details: ");
+    printf("\n");
     for(int i=0; i<max_employee; i++){
         if(employees[i].experience >= 5 && employees[i].salary < 10000){
             printf("Employee number:%d, Name:%s, Experience:%d, Salary:%.2f",employees[i].empoyee_no, employees[i].employee_name, employees[i].experience, employees[i].salary);
