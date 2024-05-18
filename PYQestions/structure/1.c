@@ -1,3 +1,9 @@
+/*Write a program to design a structure Employee with members
+Employee No,Employee Name, Experience and salary. 
+Read the information of 100employees and display 
+employee information that is having 5 years
+or moreexperience and salary less than Rs. 10,000*/
+
 #include <stdio.h>
 
 struct employee{
